@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 import random
 import json
 import os
+from datetime import date
 
 app = Flask(__name__)
 
@@ -33,6 +34,14 @@ def home():
         "message": "Welcome to the Question API! Try /question/random"
     })
 
+@app.route("/question/daily", methods=["GET"])
+def daily_question():
+    # Use today's date to pick a question index
+    today = date.today()
+    index = today.toordinal() % len(questions)
+    return jsonify(questions[index])
+
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
